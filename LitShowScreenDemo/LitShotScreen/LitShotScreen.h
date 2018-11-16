@@ -26,7 +26,13 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  获取截屏
  */
-+ (UIImage *)imageDataFromScreenShot;
++ (UIImage *)screenShotImage;
+
+/**
+ 可以将横屏截取的图片 变成竖屏显示的模式
+ */
++ (UIImage *)screenShotPortraitImageWithLandscapeImage;
+
 @end
 
 NS_ASSUME_NONNULL_END

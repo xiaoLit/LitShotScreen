@@ -85,7 +85,7 @@
     }
     
     //获取屏幕的截图
-    UIImage *image = [LitShotScreen imageDataFromScreenShot];
+    UIImage *image = [LitShotScreen screenShotImage];
     //展示图片
     [self showScreenShotImage:image];
 }
@@ -111,21 +111,23 @@
     [backgroundView addSubview:imageView];
     
     //分享按钮
-    UIButton *shareBtn = [[UIButton alloc]initWithFrame:CGRectMake(80,SCREEN_HEIGHT,80,50)];
+    UIButton *shareBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/5,SCREEN_HEIGHT,SCREEN_WIDTH/5,50)];
     [shareBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [shareBtn setTitle:@"分享" forState:UIControlStateNormal];
     shareBtn.backgroundColor = [UIColor whiteColor];
     [shareBtn addTarget:self action:@selector(clickShareBtn) forControlEvents:UIControlEventTouchUpInside];
     [backgroundView addSubview:shareBtn];
-    
+    shareBtn.layer.cornerRadius = 10;
+
     //取消按钮
-    UIButton *cancelBtn = [[UIButton alloc]initWithFrame:CGRectMake(200,SCREEN_HEIGHT,100,50)];
+    UIButton *cancelBtn = [[UIButton alloc]initWithFrame:CGRectMake(SCREEN_WIDTH/5 *3,SCREEN_HEIGHT,SCREEN_WIDTH/5,50)];
     [cancelBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     [cancelBtn setTitle:@"取消" forState:UIControlStateNormal];
     cancelBtn.backgroundColor = [UIColor whiteColor];
     [cancelBtn addTarget:self action:@selector(clickCancelBtn) forControlEvents:UIControlEventTouchUpInside];
     [backgroundView addSubview:cancelBtn];
-    
+    cancelBtn.layer.cornerRadius = 10;
+
     
     UIWindow *window = [UIApplication sharedApplication].keyWindow;
     [window addSubview:backgroundView];

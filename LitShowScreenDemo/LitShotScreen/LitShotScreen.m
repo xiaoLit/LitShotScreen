@@ -46,8 +46,7 @@
 }
 
 
-+ (UIImage *)imageDataFromScreenShot {
-    
++ (UIImage *)screenShotImage {
     /**
      创建一个基于位图的上下文（context）,并将其设置为当前上下文(context)
      @param size 参数size为新创建的位图上下文的大小。它同时是由UIGraphicsGetImageFromCurrentImageContext函数返回的图形大小
@@ -55,32 +54,74 @@
      @param scale 缩放因子 iPhone 4是2.0，其他是1.0。虽然这里可以用[UIScreen mainScreen].scale来获取，但实际上设为0后，系统就会自动设置正确的比例了
      */
     UIGraphicsBeginImageContextWithOptions([UIScreen mainScreen].bounds.size, NO, 0);
-    
+
     //获取当前上下文
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
+
     //遍历所有窗口 用于完善处理一些多层windows显示问题
     for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
-        //保存上下文的当前状态
-        //        CGContextSaveGState(context);
-        //平移绘制图片
-        //        CGContextTranslateCTM(context, window.center.x, window.center.y);
-        //实现联合变换
-        //        CGContextConcatCTM(context, window.transform);
-        
-        //        CGContextTranslateCTM(context, -window.bounds.size.width * window.layer.anchorPoint.x, -window.bounds.size.height * window.layer.anchorPoint.y);
+
         if ([window respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
             [window drawViewHierarchyInRect:window.bounds afterScreenUpdates:YES];
         } else {
             //layer是不能够直接绘制的.要用渲染的方法才能够让它绘制到上下文当中。
             [window.layer renderInContext:context];
         }
-        //还原上下文的当前状态
-        //        CGContextRestoreGState(context);
     }
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    return image;
+}
+
+
++ (UIImage *)screenShotPortraitImageWithLandscapeImage {
+    
+    CGSize imageSize = CGSizeZero;
+    UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
+    if (UIInterfaceOrientationIsPortrait(orientation)) {
+        imageSize = [UIScreen mainScreen].bounds.size;
+    } else {
+        imageSize = CGSizeMake([UIScreen mainScreen].bounds.size.height, [UIScreen mainScreen].bounds.size.width);
+    }
+    
+    UIGraphicsBeginImageContextWithOptions(imageSize, NO, 0);
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
+        //保存当前上下文状态
+        CGContextSaveGState(context);
+        //平移绘制
+        CGContextTranslateCTM(context, window.center.x, window.center.y);
+        //联合变换
+        CGContextConcatCTM(context, window.transform);
+        //平移绘制图片
+        CGContextTranslateCTM(context, -window.bounds.size.width * window.layer.anchorPoint.x, -window.bounds.size.height * window.layer.anchorPoint.y);
+        //根据屏幕方向不同进行不同的变换
+        if (orientation == UIInterfaceOrientationLandscapeLeft) {
+            CGContextRotateCTM(context, M_PI_2);
+            CGContextTranslateCTM(context, 0, -imageSize.width);
+        } else if (orientation == UIInterfaceOrientationLandscapeRight) {
+            CGContextRotateCTM(context, -M_PI_2);
+            CGContextTranslateCTM(context, -imageSize.height, 0);
+        } else if (orientation == UIInterfaceOrientationPortraitUpsideDown) {
+            CGContextRotateCTM(context, M_PI);
+            CGContextTranslateCTM(context, -imageSize.width, -imageSize.height);
+        }
+        
+        if ([window respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
+            [window drawViewHierarchyInRect:window.bounds afterScreenUpdates:YES];
+        } else {
+            [window.layer renderInContext:context];
+        }
+        //还原上下文状态
+        CGContextRestoreGState(context);
+    }
+    
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
     return image;
 }
+
 @end
