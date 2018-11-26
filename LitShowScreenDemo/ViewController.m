@@ -12,8 +12,9 @@
 
 #import "ViewController.h"
 
-//Tool
-#import "LitShotScreen.h"
+//Category
+#import "UIView+LitShotScreen.h"
+#import "UIImage+LitShowScreen.h"
 
 
 
@@ -68,10 +69,9 @@
 - (void)ClickBtn {
     
     //获取lab的截图
-    UIImage *image = [LitShotScreen customSnapshotFromView:_lab];
+    UIImage *image = [_lab lit_clipRect:_lab.bounds];
     //展示图片
     [self showScreenShotImage:image];
-
 }
 
 /**
@@ -85,7 +85,7 @@
     }
     
     //获取屏幕的截图
-    UIImage *image = [LitShotScreen screenShotImage];
+    UIImage *image = [UIView lit_screenShotImage];
     //展示图片
     [self showScreenShotImage:image];
 }
@@ -103,10 +103,11 @@
     
     //获取截屏图片
     UIImage *image = showImage;
-    
+    //效果放缩比例
+    CGFloat scale = 0.8;
     //显示图片
     UIImageView *imageView = [[UIImageView alloc]initWithImage:image];
-    imageView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    imageView.frame = CGRectMake(0, 0, image.size.width/scale, image.size.height/scale);
     imageView.center = backgroundView.center;
     [backgroundView addSubview:imageView];
     

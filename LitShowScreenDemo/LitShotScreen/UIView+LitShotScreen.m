@@ -1,52 +1,16 @@
 //
-//  LitShotScreen.m
-//  UITest
+//  UIView+LitShotScreen.m
+//  LitShowScreenDemo
 //
-//  Created by light on 2018/11/16.
+//  Created by light on 2018/11/19.
 //  Copyright © 2018 Lit. All rights reserved.
 //
 
-#import "LitShotScreen.h"
+#import "UIView+LitShotScreen.h"
 
-@implementation LitShotScreen
+@implementation UIView (LitShotScreen)
 
-
-+ (UIImage *)clipImage:(UIImage *)shotView {
-    
-    //上面我们获得了一个全屏的截图，下边的方法是对这个图片进行裁剪。
-    CGImageRef imageRef = shotView.CGImage;
-    //这里要特别注意，这里的宽度 CGImageGetWidth(imageRef) 是图片的像素宽（高度同解），所以计算截图区域时需要按比例来；
-    //这里举的例子是宽高屏幕1/2位置在中心
-    CGRect rect =  CGRectMake(CGImageGetWidth(imageRef)/4, CGImageGetHeight(imageRef)/2-CGImageGetWidth(imageRef)/2, CGImageGetWidth(imageRef)/2, CGImageGetWidth(imageRef)/2);//这里可以设置想要截图的区域
-    
-    CGImageRef imageRefRect =CGImageCreateWithImageInRect(imageRef, rect);
-    
-    UIImage *clipImage =[[UIImage alloc] initWithCGImage:imageRefRect];
-    
-    return clipImage;
-}
-
-
-+ (UIImage *)customSnapshotFromView:(UIView *)inputView {
-    UIGraphicsBeginImageContextWithOptions(inputView.frame.size, NO, 0.0);
-    
-    CGContextRef context =UIGraphicsGetCurrentContext();
-    
-    if ([inputView respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
-        [inputView drawViewHierarchyInRect:inputView.bounds afterScreenUpdates:YES];
-    } else {
-        [inputView.layer renderInContext:context];
-    }
-    
-    UIImage*targetImage =UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return targetImage;
-}
-
-
-+ (UIImage *)screenShotImage {
++ (UIImage *)lit_screenShotImage {
     /**
      创建一个基于位图的上下文（context）,并将其设置为当前上下文(context)
      @param size 参数size为新创建的位图上下文的大小。它同时是由UIGraphicsGetImageFromCurrentImageContext函数返回的图形大小
@@ -54,13 +18,13 @@
      @param scale 缩放因子 iPhone 4是2.0，其他是1.0。虽然这里可以用[UIScreen mainScreen].scale来获取，但实际上设为0后，系统就会自动设置正确的比例了
      */
     UIGraphicsBeginImageContextWithOptions([UIScreen mainScreen].bounds.size, NO, 0);
-
+    
     //获取当前上下文
     CGContextRef context = UIGraphicsGetCurrentContext();
-
+    
     //遍历所有窗口 用于完善处理一些多层windows显示问题
     for (UIWindow *window in [[UIApplication sharedApplication] windows]) {
-
+        
         if ([window respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
             [window drawViewHierarchyInRect:window.bounds afterScreenUpdates:YES];
         } else {
@@ -70,12 +34,42 @@
     }
     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-
+    
     return image;
 }
 
 
-+ (UIImage *)screenShotPortraitImageWithLandscapeImage {
+- (UIImage *)lit_clipRect:(CGRect)rect {
+    
+    //将view的转换成图片
+    UIGraphicsBeginImageContextWithOptions(self.frame.size, NO, 0.0);
+    
+    CGContextRef context =UIGraphicsGetCurrentContext();
+    
+    if ([self respondsToSelector:@selector(drawViewHierarchyInRect:afterScreenUpdates:)]) {
+        [self drawViewHierarchyInRect:self.bounds afterScreenUpdates:YES];
+    } else {
+        [self.layer renderInContext:context];
+    }
+    UIImage *targetImage =UIGraphicsGetImageFromCurrentImageContext();
+    
+    UIGraphicsEndImageContext();
+
+    //对这个图片进行裁剪。
+    CGImageRef imageRef = targetImage.CGImage;
+    //计算截图区域时需要按比例来
+    CGFloat scale = [UIScreen mainScreen].scale;
+    //这里可以设置想要截图的区域
+    CGRect tempRect =  CGRectMake(rect.origin.x * scale, rect.origin.y * scale, rect.size.width * scale, rect.size.height * scale);
+    //是C的函数，使用CGRect的坐标都是像素
+    CGImageRef imageRefRect = CGImageCreateWithImageInRect(imageRef, tempRect);
+    
+    UIImage *clipImage =[[UIImage alloc]initWithCGImage:imageRefRect scale:scale orientation:(UIImageOrientationUp)];
+    return clipImage;
+}
+
+
++ (UIImage *)lit_screenShotPortraitImageWithLandscapeImage {
     
     CGSize imageSize = CGSizeZero;
     UIInterfaceOrientation orientation = [UIApplication sharedApplication].statusBarOrientation;
@@ -123,5 +117,6 @@
     
     return image;
 }
+
 
 @end

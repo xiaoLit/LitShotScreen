@@ -7,16 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A06281FB21A263BB001F1C52 /* UIView+LitShotScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = A06281FA21A263BB001F1C52 /* UIView+LitShotScreen.m */; };
+		A06281FE21A26456001F1C52 /* UIImage+LitShowScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = A06281FD21A26456001F1C52 /* UIImage+LitShowScreen.m */; };
 		A08250CB219EB9AE00B0758C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A08250CA219EB9AE00B0758C /* AppDelegate.m */; };
 		A08250CE219EB9AE00B0758C /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A08250CD219EB9AE00B0758C /* ViewController.m */; };
 		A08250D1219EB9AE00B0758C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A08250CF219EB9AE00B0758C /* Main.storyboard */; };
 		A08250D3219EB9AF00B0758C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A08250D2219EB9AF00B0758C /* Assets.xcassets */; };
 		A08250D6219EB9AF00B0758C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A08250D4219EB9AF00B0758C /* LaunchScreen.storyboard */; };
 		A08250D9219EB9AF00B0758C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A08250D8219EB9AF00B0758C /* main.m */; };
-		A08250E6219EBA0200B0758C /* LitShotScreen.m in Sources */ = {isa = PBXBuildFile; fileRef = A08250E4219EBA0200B0758C /* LitShotScreen.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A06281F921A263BB001F1C52 /* UIView+LitShotScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIView+LitShotScreen.h"; sourceTree = "<group>"; };
+		A06281FA21A263BB001F1C52 /* UIView+LitShotScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIView+LitShotScreen.m"; sourceTree = "<group>"; };
+		A06281FC21A26456001F1C52 /* UIImage+LitShowScreen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+LitShowScreen.h"; sourceTree = "<group>"; };
+		A06281FD21A26456001F1C52 /* UIImage+LitShowScreen.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LitShowScreen.m"; sourceTree = "<group>"; };
 		A08250C6219EB9AE00B0758C /* LitShowScreenDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LitShowScreenDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A08250C9219EB9AE00B0758C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A08250CA219EB9AE00B0758C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -27,8 +32,6 @@
 		A08250D5219EB9AF00B0758C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A08250D7219EB9AF00B0758C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A08250D8219EB9AF00B0758C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		A08250E4219EBA0200B0758C /* LitShotScreen.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LitShotScreen.m; sourceTree = "<group>"; };
-		A08250E5219EBA0200B0758C /* LitShotScreen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LitShotScreen.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,8 +81,10 @@
 		A08250E3219EBA0200B0758C /* LitShotScreen */ = {
 			isa = PBXGroup;
 			children = (
-				A08250E5219EBA0200B0758C /* LitShotScreen.h */,
-				A08250E4219EBA0200B0758C /* LitShotScreen.m */,
+				A06281F921A263BB001F1C52 /* UIView+LitShotScreen.h */,
+				A06281FA21A263BB001F1C52 /* UIView+LitShotScreen.m */,
+				A06281FC21A26456001F1C52 /* UIImage+LitShowScreen.h */,
+				A06281FD21A26456001F1C52 /* UIImage+LitShowScreen.m */,
 			);
 			path = LitShotScreen;
 			sourceTree = "<group>";
@@ -155,7 +160,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A08250CE219EB9AE00B0758C /* ViewController.m in Sources */,
-				A08250E6219EBA0200B0758C /* LitShotScreen.m in Sources */,
+				A06281FE21A26456001F1C52 /* UIImage+LitShowScreen.m in Sources */,
+				A06281FB21A263BB001F1C52 /* UIView+LitShotScreen.m in Sources */,
 				A08250D9219EB9AF00B0758C /* main.m in Sources */,
 				A08250CB219EB9AE00B0758C /* AppDelegate.m in Sources */,
 			);
